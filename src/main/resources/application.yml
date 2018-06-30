@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+event:
+  sender:
+    topic: events
+
+logging:
+  level:
+    root: INFO
+    es.eci.elejandria: DEBUG
