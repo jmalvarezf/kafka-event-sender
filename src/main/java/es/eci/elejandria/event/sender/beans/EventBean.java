@@ -16,6 +16,16 @@ public class EventBean {
 
     private Origin origin;
 
+    private Integer customerId;
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
     public EventType getEventType() {
         return eventType;
     }
@@ -46,6 +56,7 @@ public class EventBean {
         sb.append("eventType=").append(eventType);
         sb.append(", quantity=").append(quantity);
         sb.append(", origin=").append(origin);
+        sb.append(", customerId=").append(customerId);
         sb.append('}');
         return sb.toString();
     }
