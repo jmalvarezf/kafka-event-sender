@@ -5,8 +5,8 @@ import java.util.List;
 
 public class EventBean {
 
-    private enum EventType {
-        CLICK, BUY, RECOMMEND, RETURN
+    public enum EventType {
+        CLICK, BUY, RETURN
     }
 
     private enum Origin {
