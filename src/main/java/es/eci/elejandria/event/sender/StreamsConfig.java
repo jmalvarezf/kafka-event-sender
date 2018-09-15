@@ -30,13 +30,17 @@ public class StreamsConfig {
     @Value("${event.sender.topic}")
     private String topic;
 
-    @Value("${event.store}")
+    @Value("${event.store.name}")
     private String eventStoreName;
+
+    @Value("${event.store.topic}")
+    private String eventStoreTopic;
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public org.apache.kafka.streams.StreamsConfig kStreamsConfigs() {
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put(org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG, "event-stream");
+        props.put(org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG, "event-sender-stream");
+        props.put(org.apache.kafka.streams.StreamsConfig.CONSUMER_PREFIX, "event-sender-consumer");
         props.put(org.apache.kafka.streams.StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         props.put(org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, new JsonSerde<>(EventBean.class).getClass());
@@ -53,6 +57,6 @@ public class StreamsConfig {
         config.put(JsonDeserializer.DEFAULT_KEY_TYPE, String.class);
         config.put(JsonDeserializer.DEFAULT_VALUE_TYPE, EventBean.class);
         jsonSerde.configure(config, false);
-        return builder.globalTable(topic, Consumed.with(new Serdes.StringSerde(), jsonSerde), Materialized.as(eventStoreName));
+        return builder.globalTable(eventStoreTopic, Consumed.with(new Serdes.StringSerde(), jsonSerde), Materialized.as(eventStoreName));
     }
 }

@@ -25,7 +25,7 @@ public class RestController {
     @Value("${event.sender.topic}")
     private String topic;
 
-    @Value("${event.store}")
+    @Value("${event.store.name}")
     private String eventStoreName;
 
 

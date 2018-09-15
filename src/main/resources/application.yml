@@ -9,7 +9,9 @@ spring:
 event:
   sender:
     topic: events
-  store: events-store
+  store:
+    name: events-store
+    topic: events-table
 
 logging:
   level:

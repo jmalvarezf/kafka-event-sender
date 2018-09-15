@@ -24,14 +24,18 @@ public class KafkaEventSender {
     @Value("${event.sender.topic}")
     private String topic;
 
+    @Value("${event.store.topic}")
+    private String eventStoreTopic;
+
     public void send(EventBean event) {
         if (event.getEventType().equals(EventBean.EventType.INFO)) {
             List<ProductBean> productClicked = new ArrayList<ProductBean>();
             productClicked.add(event.getProducts().get(0));
             event.setProducts(productClicked);
         }
-        ProducerRecord<String, EventBean> record = new ProducerRecord<String, EventBean>(topic, event.getId(), event);
+        ProducerRecord<String, EventBean> tableRecord = new ProducerRecord<String, EventBean>(eventStoreTopic, event.getId(), event);
         log.info("sending message='{}' to topic='{}'", event, topic);
-        kafkaTemplate.send(record);
+        kafkaTemplate.send(topic, event);
+        kafkaTemplate.send(tableRecord);
     }
 }
