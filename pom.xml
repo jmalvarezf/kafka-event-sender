@@ -6,8 +6,8 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.eci.elejandria.event.sender</groupId>
-    <artifactId>spring-boot</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <artifactId>event-sender</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
     <url>http://elejandria.site</url>
     <description>Spring Kafka Spring Boot Event Sender</description>
     <name>Elejandria event sender</name>
@@ -21,7 +21,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-kafka.version>2.1.4.RELEASE</spring-kafka.version>
+        <spring-kafka.version>2.1.10.RELEASE</spring-kafka.version>
         <dockerfile-maven-version>1.4.3</dockerfile-maven-version>
     </properties>
 
@@ -31,9 +31,34 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>${spring-kafka.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.kafka</groupId>
+                    <artifactId>kafka-clients</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-kafka-streams</artifactId>
+            <version>2.0.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>io.github.benas</groupId>
@@ -47,12 +72,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
-            <version>${spring-kafka.version}</version>
-            <scope>test</scope>
-        </dependency>
+
 
     </dependencies>
 

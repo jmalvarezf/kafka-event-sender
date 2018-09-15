@@ -1,26 +1,38 @@
 package es.eci.elejandria.event.sender.beans;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class EventBean {
 
     public enum EventType {
-        CLICK, BUY, RETURN
+        INFO, BUY, RETURN
     }
 
-    private enum Origin {
-        WEB, SHOP, PHONE
+    private enum Channel {
+        WEB, STORE, PHONE
     }
+
+    public EventBean() {
+        id = UUID.randomUUID().toString();
+    }
+
 
     private EventType eventType;
 
     private List<ProductBean> products;
 
-    private Origin origin;
+    private Channel channel;
+
+    private String id;
 
     private CustomerBean customer;
 
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
     private Date timestamp;
 
     public EventType getEventType() {
@@ -31,12 +43,20 @@ public class EventBean {
         this.eventType = eventType;
     }
 
-    public Origin getOrigin() {
-        return origin;
+    public String getId() {
+        return id;
     }
 
-    public void setOrigin(Origin origin) {
-        this.origin = origin;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel origin) {
+        this.channel = origin;
     }
 
     public List<ProductBean> getProducts() {
@@ -66,9 +86,10 @@ public class EventBean {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("EventBean{");
-        sb.append("eventType=").append(eventType);
+        sb.append("id='").append(id).append('\'');
+        sb.append(", eventType=").append(eventType);
         sb.append(", products=").append(products);
-        sb.append(", origin=").append(origin);
+        sb.append(", channel=").append(channel);
         sb.append(", customer=").append(customer);
         sb.append(", timestamp=").append(timestamp);
         sb.append('}');

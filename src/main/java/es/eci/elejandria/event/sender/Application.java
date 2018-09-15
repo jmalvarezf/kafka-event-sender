@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -21,6 +23,8 @@ import java.util.Calendar;
 import static java.nio.charset.Charset.forName;
 
 @SpringBootApplication
+@EnableKafka
+@EnableKafkaStreams
 public class Application implements CommandLineRunner {
 
     public static void main(String[] args) {

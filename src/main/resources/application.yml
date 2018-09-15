@@ -8,6 +8,7 @@ spring:
 event:
   sender:
     topic: events
+  store: events-store
 
 logging:
   level:
