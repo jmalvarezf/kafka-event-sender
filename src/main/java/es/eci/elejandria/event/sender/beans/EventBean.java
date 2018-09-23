@@ -32,7 +32,7 @@ public class EventBean {
 
     private CustomerBean customer;
 
-    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.mmm'Z'")
     private Date timestamp;
 
     public EventType getEventType() {

@@ -8,10 +8,9 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.StreamsBuilderFactoryBean;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
@@ -30,7 +29,11 @@ public class RestController {
 
 
     @RequestMapping(method = RequestMethod.POST, path = "/events")
+    @CrossOrigin(origins = "*")
     public void addEvent(@RequestBody EventBean bean) {
+        if (bean.getId() == null) {
+            bean.setId(UUID.randomUUID().toString());
+        }
         eventSender.send(bean);
     }
 
