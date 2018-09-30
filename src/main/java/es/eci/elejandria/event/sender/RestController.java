@@ -27,6 +27,15 @@ public class RestController {
     @Value("${event.store.name}")
     private String eventStoreName;
 
+    private Integer sendTimeMillis;
+
+    public Integer getSendTimeMillis() {
+        return sendTimeMillis;
+    }
+
+    public void setSendTimeMillis(Integer sendTimeMillis) {
+        this.sendTimeMillis = sendTimeMillis;
+    }
 
     @RequestMapping(method = RequestMethod.POST, path = "/events")
     @CrossOrigin(origins = "*")
@@ -43,5 +52,10 @@ public class RestController {
         ReadOnlyKeyValueStore<String, EventBean> keyValueStore =
                 streams.store(eventStoreName, QueryableStoreTypes.keyValueStore());
         return keyValueStore.get(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/events/time/{timeInMillis}")
+    public void setTimeBetweenEvents(@PathVariable String timeInMillis) {
+        setSendTimeMillis(Integer.parseInt(timeInMillis));
     }
 }

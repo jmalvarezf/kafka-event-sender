@@ -27,12 +27,17 @@ import static java.nio.charset.Charset.forName;
 @EnableKafkaStreams
 public class Application implements CommandLineRunner {
 
+    public static final int DEFAULT_TIME_BETWEEN_EVENTS_IN_MILLIS = 5000;
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     @Autowired
     private KafkaEventSender sender;
+
+    @Autowired
+    private RestController restController;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -47,11 +52,23 @@ public class Application implements CommandLineRunner {
                 .randomize(CustomerBean.class, new CustomerRandomizer())
                 .randomize(ProductBean.class, new ProductRandomizer())
                 .overrideDefaultInitialization(false)
-                .dateRange(LocalDate.now(), Instant.ofEpochMilli(Calendar.getInstance().getTimeInMillis() + 86400000).atZone(ZoneId.systemDefault()).toLocalDate())
+                .dateRange(LocalDate.now(),
+                        Instant.ofEpochMilli(Calendar.getInstance().getTimeInMillis() + 86400000).atZone(ZoneId.systemDefault()).toLocalDate())
                 .build();
         while (true) {
-            sender.send(random.nextObject(EventBean.class));
-            Thread.sleep(5000);
+            if (restController.getSendTimeMillis() == null) {
+                sender.send(random.nextObject(EventBean.class));
+                Thread.sleep(DEFAULT_TIME_BETWEEN_EVENTS_IN_MILLIS);
+            }
+            else {
+                if (restController.getSendTimeMillis() > 0) {
+                    sender.send(random.nextObject(EventBean.class));
+                    Thread.sleep(restController.getSendTimeMillis());
+                }
+                else {
+                    Thread.sleep(DEFAULT_TIME_BETWEEN_EVENTS_IN_MILLIS);
+                }
+            }
         }
 
     }
